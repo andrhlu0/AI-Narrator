@@ -1,0 +1,10 @@
+openai>=0.27.0
+transformers>=4.30.0
+torch>=2.0.0
+sentence-transformers>=2.2.2
+opencv-python>=4.7.0
+ffmpeg-python>=0.2.0
+pyttsx3>=2.90
+pydub>=0.25.1
+python-dotenv>=1.0.0
+pytest>=7.3.1
