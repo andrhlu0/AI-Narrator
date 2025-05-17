@@ -8,24 +8,28 @@ from src.tts_engine import synthesize_audio
 from src.aligner import align_narration
 from src.muxer import mux_audio_to_video
 
-
-import json
+def validate_input_video(video_path: str) -> None:
+    """Raise error if video file is missing or not an .mp4."""
+    if not os.path.isfile(video_path):
+        raise FileNotFoundError(f"Input video '{video_path}' not found.")
+    if not video_path.lower().endswith('.mp4'):
+        raise ValueError(f"Unsupported format: '{video_path}'. Only .mp4 files are accepted.")
 
 def process_video(video_path: str, output_dir: str):
     os.makedirs(output_dir, exist_ok=True)
 
-    # Step 1: Always extract scenes (don't load from file)
+    # Step 1: Extract scenes
     print("[1/6] Extracting scenes from video...")
     scenes = extract_scenes(video_path)
     with open("sample_data/scenes.json", "w", encoding="utf-8") as f:
         json.dump(scenes, f, indent=2)
-    
-    # Step 2: Always analyze scenes (don't load from file)
+
+    # Step 2: Analyze scenes
     print("[2/6] Analyzing scenes with vision model...")
     scene_descriptions = analyze_scenes(scenes, video_path)
     with open("sample_data/scene_descriptions.json", "w", encoding="utf-8") as f:
         json.dump(scene_descriptions, f, indent=2)
-    
+
     # Step 3: Generate story narration
     print("[3/6] Generating story narration with LLM...")
     narration = generate_narration(scene_descriptions)
@@ -48,3 +52,15 @@ def process_video(video_path: str, output_dir: str):
 
     print("Narration pipeline complete.")
     return narration_timed, audio_path, narrated_video_path
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description="Narrate an input MP4 video.")
+    parser.add_argument("video_path", help="Path to input .mp4 video")
+    parser.add_argument("--output_dir", default="test_output", help="Directory to save outputs")
+    args = parser.parse_args()
+
+    try:
+        validate_input_video(args.video_path)
+        process_video(args.video_path, args.output_dir)
+    except Exception as e:
+        print(f"[ERROR] {e}")
