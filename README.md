@@ -1,4 +1,4 @@
-# Animated Video Narration Pipeline
+# Video Narration Pipeline
 
 This project automatically generates engaging narration for an input video by extracting scenes, analyzing visuals, generating a story with a language model, synthesizing narration audio, and muxing it with the original video.
 
