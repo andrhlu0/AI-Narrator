@@ -5,7 +5,7 @@ from src.main import process_video
 
 class TestIntegration(unittest.TestCase):
     def test_full_pipeline(self):
-        video_path = "sample_data/sample_video2.mp4"
+        video_path = "sample_data/sample_video.mp4"
         output_dir = "sample_data/test_output"
 
         narration_timed, audio_path, narrated_video_path = process_video(video_path, output_dir)

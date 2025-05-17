@@ -15,7 +15,7 @@ def generate_narration(scene_descriptions: List[str]) -> List[str]:
 
     prompt = (
         "You are a creative storyteller. Given a sequence of scene descriptions from an animated short film, "
-        "write an engaging narration for each scene that tells the story emotionally and dynamically. "
+        "write an engaging narration, like in movies, for each scene that tells the story emotionally and dynamically. "
         "Avoid literal captions; instead, create a flowing narrative that feels like a rich audiobook.\n\n"
         "Scenes:\n"
     )

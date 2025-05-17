@@ -4,21 +4,32 @@ import os
 import tempfile
 from pydub import AudioSegment
 
+import re
+
+def clean_text(text: str) -> str:
+    # Remove all occurrences of "scene" and "narration" (case-insensitive)
+    text = re.sub(r'\b(scene|narration)\b', '', text, flags=re.IGNORECASE)
+    # Remove all asterisks
+    text = text.replace('*', '')
+    # Remove extra spaces left by removals
+    text = re.sub(r'\s+', ' ', text)
+    return text.strip()
+
 def synthesize_audio(narration_timed: List[Tuple[float, str]], output_path: str) -> None:
     engine = pyttsx3.init()
     engine.setProperty('rate', 160)
 
     temp_files = []
-    tasks = []
 
     # Prepare all TTS tasks first
     for i, (start_time, text) in enumerate(narration_timed):
-        if not text.strip():
+        cleaned_text = clean_text(text)
+        if not cleaned_text.strip():
             temp_files.append(None)
             continue
         tf = tempfile.NamedTemporaryFile(delete=False, suffix=".wav")
         temp_files.append(tf.name)
-        engine.save_to_file(text, tf.name)
+        engine.save_to_file(cleaned_text, tf.name)
         tf.close()
 
     # Only call runAndWait once
@@ -29,7 +40,8 @@ def synthesize_audio(narration_timed: List[Tuple[float, str]], output_path: str)
     current_time = 0.0
 
     for i, (start_time, text) in enumerate(narration_timed):
-        if not text.strip() or temp_files[i] is None:
+        cleaned_text = clean_text(text)
+        if not cleaned_text.strip() or temp_files[i] is None:
             continue
         try:
             segment = AudioSegment.from_wav(temp_files[i])

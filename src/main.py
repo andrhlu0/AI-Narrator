@@ -19,13 +19,13 @@ def process_video(video_path: str, output_dir: str):
     scenes = extract_scenes(video_path)
     with open("sample_data/scenes.json", "w", encoding="utf-8") as f:
         json.dump(scenes, f, indent=2)
-
+    
     # Step 2: Always analyze scenes (don't load from file)
     print("[2/6] Analyzing scenes with vision model...")
     scene_descriptions = analyze_scenes(scenes, video_path)
     with open("sample_data/scene_descriptions.json", "w", encoding="utf-8") as f:
         json.dump(scene_descriptions, f, indent=2)
-
+    
     # Step 3: Generate story narration
     print("[3/6] Generating story narration with LLM...")
     narration = generate_narration(scene_descriptions)
