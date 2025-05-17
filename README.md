@@ -18,8 +18,8 @@ This project automatically generates engaging narration for an input video by ex
 
 1. Clone the repo:
    ```bash
-   git clone https://github.com/yourusername/animated-narration.git
-   cd animated-narration
+   git clone https://github.com/andrhlu0/AI-Narrator.git
+   cd AI-Narrator
 2. Create and activate a Python virtual environment:
     python -m venv venv
     source venv/bin/activate  # Linux/macOS
@@ -33,11 +33,10 @@ This project automatically generates engaging narration for an input video by ex
 
 ## Usage
 
-Run the pipeline on a video file:
-
-```bash
-python main.py --video_path path/to/video.mp4 --output_dir output
-```
+1. Rename your input video to sample_video.mp4 and place it in the sample_data/ folder.
+2. Run the integration test pipeline:
+    python -m unittest tests/test_integration.py
+3. The narrated video will be saved in the test_output/ folder.
 
 ---
 
